@@ -10,6 +10,7 @@ console.log(saudacao("Rayssa"))
 const soma = function(a,b) {
     return a + b;
 }
+
 console.log(soma(5,3))
 console.log(soma(10,20))
 console.log(soma(-1,1))
@@ -38,3 +39,27 @@ function somar (a,b){
 }
 
 console.log( somar(5,10))
+
+
+// Função declarativa 
+function cumprimentar(nome2= "Rayssa"){
+    return`Olá, ${nome2}! Como você está?`
+
+}
+
+// Função auto-invocada
+(function(){
+    console.log("Função auto-invocada");
+})();
+
+// Função callback
+function processar(valor, callback){
+    const resultado = callback(valor);
+    console.log(`Resultado:${resultado}`);
+}
+
+// Função assíncrona
+ async function processarAsync(valor,callback){
+        const resultado = await callback(valor);
+        console.log(`Resultado:${resultado}`);
+}
