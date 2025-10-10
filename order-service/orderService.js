@@ -11,7 +11,7 @@ if(!MONGO_URI) {
 
 }
 
-mongoose.connect(MONGO_URI, { useNewUrlParse: true, useUnifiedTopology: true})
+mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
 .then(() => console.log('MongoDB connected'))
 .catch(err => console.error('MongoDb connection error:', err));
 
@@ -24,15 +24,15 @@ const orderSchema = new mongoose.Schema({
 
 const Order = mongoose.model('Order', orderSchema);
 
-app.post('/pedidos', async (requestAnimationFrame, res) => {
+app.post('/pedidos', async (req, res) => {
     try{ 
         const {userId, items = [], total = 0} = req.body;
         if(!userId) 
-            return res.status(400).json({ error: 'userId is not required'});
+            return res.status(400).json({ error: 'userId is required' });
     
             const order= new Order({ userId, items, total});
             const saved = await order.save();
-            console.log(`Pedido criado: ${saved_id} para user ${userId}`);
+            console.log(`Pedido criado: ${saved._id} para user ${userId}`);
             res.status(201).json(order);
     }
     catch (error) {
@@ -41,7 +41,7 @@ app.post('/pedidos', async (requestAnimationFrame, res) => {
     }
 });
 
-app.get('pedidos', async(req, res) =>{
+app.get('/pedidos', async(req, res) =>{
     try{
         const orders = await Order.find().sort({createdAt: -1});
         return res.json(orders)
