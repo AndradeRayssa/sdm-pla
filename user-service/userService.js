@@ -12,7 +12,7 @@ if(!MONGO_URI) {
 
 }
 
-mongoose.connect(MONGO_URI, { useNewUrlParse: true, useUnifiedTopology: true})
+mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
 .then(() => console.log('MongoDB connected'))
 .catch(err => console.error('MongoDb connection error:', err));
 
@@ -24,7 +24,7 @@ const userSchema = new mongoose.Schema({
 
 const User = mongoose.model('User', userSchema);
 
-app.post('/usuarios', async (requestAnimationFrame, res) => {
+app.post('/usuarios', async (req, res) => {
     try{ 
         const {name= '',email} = req.body;
         if(!email) 
@@ -39,7 +39,7 @@ app.post('/usuarios', async (requestAnimationFrame, res) => {
             catch(err){
                 console.error('Erro ao criar pedido para o usuário:', err)
             }
-            return res.status(201).json(save);
+            return res.status(201).json(saved);
     }
     catch(err){
         console.error(err)
@@ -47,6 +47,18 @@ app.post('/usuarios', async (requestAnimationFrame, res) => {
 
     return res.status(500).json({error: 'Erro ao criar usuário'})
     }
+});
+
+app.get('/usuarios', async(req,res) => {
+    try{
+        const users = await User.find().sort({createdAt: -1})
+        return res.json(users);
+    }
+    catch(err) {
+        console.error(err);
+        return res.status(500).json({error: 'Erro ao buscar usuário'});
+    }
+
 });
 
 app.listen(3000, () => {
